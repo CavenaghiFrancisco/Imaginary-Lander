@@ -7,8 +7,8 @@ public class MoonTerrainGenerator : MonoBehaviour
     private int depth = 10;
     private int scale = 30;
 
-    private int width = 256;
-    private int height = 256;
+    private int width = 512;
+    private int height = 512;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +34,6 @@ public class MoonTerrainGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                if(x > 50 && x < 60 && y > 50 && y < 60)
                 heights[x, y] = CalculateHeight(x, y);
             }
         }

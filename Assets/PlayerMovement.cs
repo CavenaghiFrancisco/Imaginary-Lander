@@ -8,11 +8,18 @@ public class PlayerMovement : MonoBehaviour
     private Camera cam;
     private float horizontal;
     private float vertical;
+    private ParticleSystem ps;
+    private GameObject particle;
+    private ParticleSystem.MainModule main;
+    private bool propulsorON;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         cam = GetComponent<Camera>();
+        ps = transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
+        particle = transform.GetChild(1).gameObject;
+        main = ps.main;
     }
 
     // Start is called before the first frame update
@@ -28,11 +35,30 @@ public class PlayerMovement : MonoBehaviour
         vertical = Input.GetAxis("Vertical");
 
         transform.RotateAround(cam.gameObject.transform.forward, -horizontal * Time.deltaTime);
-        transform.RotateAround(cam.gameObject.transform.right, vertical * Time.deltaTime);
+        transform.RotateAround(cam.gameObject.transform.right, -vertical * Time.deltaTime);
 
-        if (Input.GetAxis("Boost") != 0)
+    }
+
+    private void FixedUpdate()
+    {
+        if (Input.GetAxis("Boost") != 0 || Input.GetAxis("Jump") != 0)
         {
-            rb.AddRelativeForce(Vector3.forward * 3000 * Time.deltaTime, ForceMode.Force);
+            if (!propulsorON)
+            {
+                main.maxParticles = 50;
+                main.loop = true;
+                ps.Play();
+                propulsorON = true;
+            }
+            rb.AddRelativeForce(Vector3.forward * 50);
+            particle.SetActive(true);
+
+        }
+        else
+        {
+            main.maxParticles = 0;
+            main.loop = false;
+            propulsorON = false;
         }
     }
 }
