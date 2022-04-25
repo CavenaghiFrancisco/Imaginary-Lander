@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     private GameObject particle;
     private ParticleSystem.MainModule main;
     private bool propulsorON;
+    private static float gasoline = 100f;
+    public static Action<float> OnPropulsorUse; 
 
     private void Awake()
     {
@@ -40,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetAxis("Boost") != 0 || Input.GetAxis("Jump") != 0)
+        if ((Input.GetAxis("Boost") != 0 || Input.GetAxis("Jump") != 0) && gasoline > 0)
         {
             if (!propulsorON)
             {
@@ -51,13 +54,24 @@ public class PlayerMovement : MonoBehaviour
             }
             rb.AddRelativeForce(Vector3.forward * 15);
             particle.SetActive(true);
-
+            gasoline -= 2f * Time.deltaTime;
+            Debug.Log(gasoline);
+            OnPropulsorUse(gasoline);
         }
         else
         {
             main.maxParticles = 0;
             main.loop = false;
             propulsorON = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Base"))
+        {
+            gasoline = 100f;
+            OnPropulsorUse(gasoline);
         }
     }
 }

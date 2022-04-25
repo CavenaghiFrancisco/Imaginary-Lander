@@ -8,23 +8,33 @@ public class MoonTerrainGenerator : MonoBehaviour
     [SerializeField] private float scale;
     [SerializeField] private GameObject prefabBase;
 
-    private int width = 512;
-    private int height = 512;
+    private int width = 256;
+    private int height = 256;
     private int crater1X;
     private int crater1Y;
     private int crater2X;
     private int crater2Y;
-    private int crater3;
-    private int crater4;
+    private int crater3X;
+    private int crater3Y;
+    private int crater4X;
+    private int crater4Y;
+    private int offsetX;
+    private int offsetY;
 
     // Start is called before the first frame update
     private void Start()
     {
         Terrain terrain = GetComponent<Terrain>();
-        crater1X = Random.Range(20, 200);
-        crater1Y = Random.Range(20, 200);
-        crater2X = Random.Range(250, 460);
-        crater2Y = Random.Range(250, 460);
+        crater1X = Random.Range(20, 50);
+        crater1Y = Random.Range(20, 50);
+        crater2X = Random.Range(20, 50);
+        crater2Y = Random.Range(130, 200);
+        crater3X = Random.Range(130, 200);
+        crater3Y = Random.Range(20, 50);
+        crater4X = Random.Range(130, 200);
+        crater4Y = Random.Range(130, 200);
+        offsetX = Random.Range(100, 9999);
+        offsetY = Random.Range(100, 9999);
         terrain.terrainData = GenerateTerrain(terrain.terrainData);
         Smooth(terrain.terrainData);
     }
@@ -45,7 +55,7 @@ public class MoonTerrainGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                if((x > crater1X && x < crater1X + 20 && y > crater1Y && y < crater1Y + 20) || (x > crater2X && x < crater2X + 20 && y > crater2Y && y < crater2Y + 20))
+                if((x > crater1X && x < crater1X + 30 && y > crater1Y && y < crater1Y + 30) || (x > crater2X && x < crater2X + 30 && y > crater2Y && y < crater2Y + 30) || (x > crater3X && x < crater3X + 30 && y > crater3Y && y < crater3Y + 30) || (x > crater4X && x < crater4X + 30 && y > crater4Y && y < crater4Y + 30))
                 {
                     heights[x, y] = -1;
                 }
@@ -55,15 +65,17 @@ public class MoonTerrainGenerator : MonoBehaviour
                 }
             }
         }
-        var crater1Base = Instantiate(prefabBase, new Vector3(crater1Y + 10, 0, crater1X + 10), Quaternion.identity);
-        var crater2Base = Instantiate(prefabBase, new Vector3(crater2Y + 10, 0, crater2X + 10), Quaternion.identity);
+        var crater1Base = Instantiate(prefabBase, new Vector3(crater1Y + 15, 0, crater1X + 15), Quaternion.identity);
+        var crater2Base = Instantiate(prefabBase, new Vector3(crater2Y + 15, 0, crater2X + 15), Quaternion.identity);
+        var crater3Base = Instantiate(prefabBase, new Vector3(crater3Y + 15, 0, crater3X + 15), Quaternion.identity);
+        var crater4Base = Instantiate(prefabBase, new Vector3(crater4Y + 15, 0, crater4X + 15), Quaternion.identity);
         return heights;
     }
 
     float CalculateHeight(int x, int y)
     {
-        float xCoord = (float)x / width * scale;
-        float yCoord = (float)y / height * scale;
+        float xCoord = (float)x / width * scale + offsetX;
+        float yCoord = (float)y / height * scale + offsetY;
 
         return Mathf.PerlinNoise(xCoord, yCoord);
     }

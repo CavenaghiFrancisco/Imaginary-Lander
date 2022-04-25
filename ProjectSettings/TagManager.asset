@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - terrain
+  - Base
   layers:
   - Default
   - TransparentFX
