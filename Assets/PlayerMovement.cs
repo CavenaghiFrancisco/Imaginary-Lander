@@ -36,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
 
         transform.RotateAround(cam.gameObject.transform.forward, -horizontal * Time.deltaTime);
         transform.RotateAround(cam.gameObject.transform.right, -vertical * Time.deltaTime);
-
     }
 
     private void FixedUpdate()
@@ -50,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
                 ps.Play();
                 propulsorON = true;
             }
-            rb.AddRelativeForce(Vector3.forward * 50);
+            rb.AddRelativeForce(Vector3.forward * 15);
             particle.SetActive(true);
 
         }

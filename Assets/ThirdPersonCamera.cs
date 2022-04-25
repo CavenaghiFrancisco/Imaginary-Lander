@@ -6,12 +6,12 @@ public class ThirdPersonCamera : MonoBehaviour
 {
     [SerializeField] private Transform lookAt;
 
-    private const float yAngleMin = 0f; 
+    private const float yAngleMin = -10f; 
     private const float yAngleMax = 50f;
 
     private Transform camTransform;
     private Camera cam;
-    private float distanceZ = 20f;
+    private float distanceZ = 30f;
     private float distanceY = 5f;
     private float currentX = 0f;
     private float currentY = 0f;
