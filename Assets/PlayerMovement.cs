@@ -37,14 +37,13 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
-
-        transform.RotateAround(cam.gameObject.transform.forward, -horizontal * Time.deltaTime);
-        transform.RotateAround(cam.gameObject.transform.right, -vertical * Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
-        if ((Input.GetAxis("Boost") != 0 || Input.GetAxis("Jump") != 0) && gasoline > 0)
+        rb.AddTorque(cam.gameObject.transform.forward * 5f * -horizontal, ForceMode.Force);
+        rb.AddTorque(cam.gameObject.transform.right * 5f * -vertical, ForceMode.Force);  
+        if (Input.GetAxis("Boost") != 0 && gasoline > 0)
         {
             if (!propulsorON)
             {
