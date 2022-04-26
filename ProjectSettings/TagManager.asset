@@ -6,6 +6,7 @@ TagManager:
   tags:
   - terrain
   - Base
+  - Saved
   layers:
   - Default
   - TransparentFX

@@ -14,7 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private ParticleSystem.MainModule main;
     private bool propulsorON;
     private static float gasoline = 100f;
-    public static Action<float> OnPropulsorUse; 
+    public static Action<float> OnPropulsorUse;
+    public static Action OnDamage;
 
     private void Awake()
     {
@@ -73,5 +74,18 @@ public class PlayerMovement : MonoBehaviour
             gasoline = 100f;
             OnPropulsorUse(gasoline);
         }
+        else
+        {
+            main.maxParticles = 0;
+            transform.GetChild(2).gameObject.SetActive(true);
+            for(int i = 0; i < transform.GetChild(0).childCount; i++)
+            {
+                transform.GetChild(0).transform.GetChild(i).gameObject.AddComponent<Rigidbody>();
+            }
+            Destroy(cam.GetComponent<ThirdPersonCamera>());
+            OnDamage();
+            Destroy(GetComponent<PlayerMovement>());
+        }
     }
+
 }

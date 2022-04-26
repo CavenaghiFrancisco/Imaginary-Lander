@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class CratersBase : MonoBehaviour
 {
+    private GameObject savedAstronauts;
     private bool collected;
     public static Action OnSuccesfulLanding;
+
+    private void Awake()
+    {
+        savedAstronauts = GameObject.FindGameObjectWithTag("Saved");
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -20,6 +26,14 @@ public class CratersBase : MonoBehaviour
                 transform.GetChild(1).gameObject.SetActive(false);
                 transform.GetChild(2).gameObject.SetActive(false);
                 transform.GetChild(3).gameObject.SetActive(false);
+                for(int i = 0; i < savedAstronauts.transform.childCount; i++)
+                {
+                    if (!savedAstronauts.transform.GetChild(i).gameObject.activeSelf)
+                    {
+                        savedAstronauts.transform.GetChild(i).gameObject.SetActive(true);
+                        break;
+                    }
+                }
             }
         }
     }
