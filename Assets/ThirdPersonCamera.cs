@@ -17,11 +17,16 @@ public class ThirdPersonCamera : MonoBehaviour
     private float currentY = 0f;
     private float sensivityX = 4f;
     private float sensivityY = 1f;
+    private Vector3 cameraDirection;
+    private float camDistance;
+    private Vector2 cameraDistanceMinMax = new Vector2(0.5f, 30f);
 
     private void Start()
     {
         camTransform = this.transform;
         cam = Camera.main;
+        cameraDirection = cam.transform.localPosition.normalized;
+        camDistance = cameraDistanceMinMax.y;
     }
 
     private void Update()
@@ -30,6 +35,7 @@ public class ThirdPersonCamera : MonoBehaviour
         currentY -= Input.GetAxis("RightStickVertical");
 
         currentY = Mathf.Clamp(currentY, yAngleMin, yAngleMax);
+        CheckCamaraCollision();
     }
 
     private void LateUpdate()
@@ -38,5 +44,22 @@ public class ThirdPersonCamera : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
         camTransform.position = lookAt.position + rotation * dir;
         camTransform.LookAt(lookAt.position);
+
+    }
+
+    private void CheckCamaraCollision()
+    {
+        Vector3 desiredCameraPosition = transform.TransformPoint(cameraDirection * cameraDistanceMinMax.y);
+        RaycastHit hit;
+        if(Physics.Linecast(transform.position, desiredCameraPosition,out hit))
+        {
+            distanceZ = -Mathf.Clamp(hit.distance, cameraDistanceMinMax.y, cameraDistanceMinMax.x);
+            Debug.Log("ee");
+        }
+        else
+        {
+            distanceZ = -cameraDistanceMinMax.y;
+        }
+        camTransform.position = cameraDirection * distanceZ;
     }
 }

@@ -55,7 +55,6 @@ public class PlayerMovement : MonoBehaviour
             rb.AddRelativeForce(Vector3.forward * 15);
             particle.SetActive(true);
             gasoline -= 2f * Time.deltaTime;
-            Debug.Log(gasoline);
             OnPropulsorUse(gasoline);
         }
         else
@@ -76,7 +75,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             main.maxParticles = 0;
-            transform.GetChild(2).gameObject.SetActive(true);
             for(int i = 0; i < transform.GetChild(0).childCount; i++)
             {
                 transform.GetChild(0).transform.GetChild(i).gameObject.AddComponent<Rigidbody>();

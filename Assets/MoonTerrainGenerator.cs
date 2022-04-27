@@ -6,10 +6,9 @@ public class MoonTerrainGenerator : MonoBehaviour
 {
     [SerializeField] private int depth;
     [SerializeField] private float scale;
-    [SerializeField] private GameObject prefabBase;
 
-    private int width = 256;
-    private int height = 256;
+    private int width = 512;
+    private int height = 512;
     private int crater1X;
     private int crater1Y;
     private int crater2X;
@@ -25,18 +24,7 @@ public class MoonTerrainGenerator : MonoBehaviour
     private void Start()
     {
         Terrain terrain = GetComponent<Terrain>();
-        crater1X = Random.Range(20, 50);
-        crater1Y = Random.Range(20, 50);
-        crater2X = Random.Range(20, 50);
-        crater2Y = Random.Range(130, 200);
-        crater3X = Random.Range(130, 200);
-        crater3Y = Random.Range(20, 50);
-        crater4X = Random.Range(130, 200);
-        crater4Y = Random.Range(130, 200);
-        offsetX = Random.Range(100, 9999);
-        offsetY = Random.Range(100, 9999);
         terrain.terrainData = GenerateTerrain(terrain.terrainData);
-        Smooth(terrain.terrainData);
     }
 
     TerrainData GenerateTerrain(TerrainData terrainData)
@@ -55,20 +43,11 @@ public class MoonTerrainGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                if((x > crater1X && x < crater1X + 30 && y > crater1Y && y < crater1Y + 30) || (x > crater2X && x < crater2X + 30 && y > crater2Y && y < crater2Y + 30) || (x > crater3X && x < crater3X + 30 && y > crater3Y && y < crater3Y + 30) || (x > crater4X && x < crater4X + 30 && y > crater4Y && y < crater4Y + 30))
-                {
-                    heights[x, y] = -1;
-                }
-                else
-                {
-                    heights[x, y] = CalculateHeight(x, y);
-                }
+                
+                heights[x, y] = CalculateHeight(x, y);
+
             }
         }
-        var crater1Base = Instantiate(prefabBase, new Vector3(crater1Y + 15, 0, crater1X + 15), Quaternion.identity);
-        var crater2Base = Instantiate(prefabBase, new Vector3(crater2Y + 15, 0, crater2X + 15), Quaternion.identity);
-        var crater3Base = Instantiate(prefabBase, new Vector3(crater3Y + 15, 0, crater3X + 15), Quaternion.identity);
-        var crater4Base = Instantiate(prefabBase, new Vector3(crater4Y + 15, 0, crater4X + 15), Quaternion.identity);
         return heights;
     }
 
