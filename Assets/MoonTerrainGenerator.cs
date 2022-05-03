@@ -33,6 +33,7 @@ public class MoonTerrainGenerator : MonoBehaviour
 
         terrainData.size = new Vector3(width, depth, height);
         terrainData.SetHeights(0, 0, GenerateHeights());
+        Smooth(terrainData);
         return terrainData;
     }
 
@@ -53,8 +54,8 @@ public class MoonTerrainGenerator : MonoBehaviour
 
     float CalculateHeight(int x, int y)
     {
-        float xCoord = (float)x / width * scale + offsetX;
-        float yCoord = (float)y / height * scale + offsetY;
+        float xCoord = (float)x / width * scale;
+        float yCoord = (float)y / height * scale;
 
         return Mathf.PerlinNoise(xCoord, yCoord);
     }

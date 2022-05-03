@@ -30,10 +30,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _OutlinePower: 1
-    - _OutlineThreshold: 3
+    - _OutlineThreshold: 87.16
     - _OutlineWidth: 1
     m_Colors:
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
 --- !u!114 &752309521393075355
 MonoBehaviour:
   m_ObjectHideFlags: 11

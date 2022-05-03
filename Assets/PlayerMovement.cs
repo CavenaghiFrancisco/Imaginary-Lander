@@ -79,9 +79,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 transform.GetChild(0).transform.GetChild(i).gameObject.AddComponent<Rigidbody>();
             }
-            Destroy(cam.GetComponent<ThirdPersonCamera>());
             OnDamage();
             Destroy(GetComponent<PlayerMovement>());
+            Destroy(GetComponent<Rigidbody>());
         }
     }
 
