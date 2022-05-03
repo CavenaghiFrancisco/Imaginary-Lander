@@ -9,7 +9,10 @@ public class UIManager : MonoBehaviour
     private Text txtMissions;
     private Text text;
     private int score = 0;
+    private float offset = 0.3f;
     private int groupsSaved = 0;
+    [SerializeField] private Material UIMaterial;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,8 +22,13 @@ public class UIManager : MonoBehaviour
         MainBase.OnCheckWinCondition += CheckWinCondition;
         text = transform.GetChild(4).GetComponent<Text>();
         txtMissions = transform.GetChild(5).transform.GetChild(0).gameObject.GetComponent<Text>();
+        transform.GetChild(0).GetComponent<Image>().material = UIMaterial;
     }
 
+    private void Update()
+    {
+        transform.GetChild(0).GetComponent<Image>().material.SetTextureOffset("_MainTex", new Vector2(offset += 0.1f * Time.deltaTime, 0));
+    }
 
     private void UpdateGasoline(float gasoline)
     {
