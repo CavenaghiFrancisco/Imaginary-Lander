@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     {
         PlayerMovement.OnPropulsorUse += UpdateGasoline;
         PlayerMovement.OnDamage += ShowLoseScreen;
-        CratersBase.OnSuccesfulLanding += UpdateScore;
+        Base.OnSuccesfulLanding += UpdateScore;
         MainBase.OnCheckWinCondition += CheckWinCondition;
     }
 
@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
     {
         PlayerMovement.OnPropulsorUse -= UpdateGasoline;
         PlayerMovement.OnDamage -= ShowLoseScreen;
-        CratersBase.OnSuccesfulLanding -= UpdateScore;
+        Base.OnSuccesfulLanding -= UpdateScore;
         SceneManager.LoadScene(scene);
     }
 }

@@ -127,7 +127,7 @@ Material:
     - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0.5
-    - _DepthMultiplier: 14
+    - _DepthMultiplier: 2332.6
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
     - _DetailNormalScale: 1
@@ -182,8 +182,8 @@ Material:
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _OutlinePower: 5
-    - _OutlineThreshold: 2165.2
-    - _OutlineWidth: 1
+    - _OutlineThreshold: 0.5
+    - _OutlineWidth: 755.53
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
     - _PPDMinSamples: 5

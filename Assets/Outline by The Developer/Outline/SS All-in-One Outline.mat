@@ -30,7 +30,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _DepthMultiplier: 160
-    - _EdgeStrengthen: 48.6
+    - _EdgeStrengthen: 3.7
     - _OutlinePower: 1
     - _OutlineThreshold: 3
     - _OutlineWidth: 1.09

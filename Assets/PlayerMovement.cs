@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public static Action<float> OnPropulsorUse;
     public static Action OnDamage;
     private PlayerIndex playerIndexOne = PlayerIndex.One;
+    private bool enabled = true;
 
     private void Awake()
     {
@@ -27,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
         ps = transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
         particle = transform.GetChild(1).gameObject;
         main = ps.main;
+        Base.OnSuccesfulLanding += EnableControls;
+        Base.OnSuccesfulCinematic += EnableControls;
     }
 
     // Start is called before the first frame update
@@ -38,42 +41,49 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        if (enabled)
+        {
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
+        }
     }
 
     private void FixedUpdate()
     {
-        if (rb)
+        if (enabled)
         {
-            rb.AddTorque(cam.gameObject.transform.forward * 5f * -horizontal, ForceMode.Force);
-            rb.AddTorque(cam.gameObject.transform.right * 5f * -vertical, ForceMode.Force);
-            if (Input.GetAxis("Boost") != 0 && gasoline > 0)
+            if (rb)
             {
-                if (!propulsorON)
+                rb.AddTorque(cam.gameObject.transform.forward * 5f * -horizontal, ForceMode.Force);
+                rb.AddTorque(cam.gameObject.transform.right * 5f * -vertical, ForceMode.Force);
+                if (Input.GetAxis("Boost") != 0 && gasoline > 0)
                 {
-                    main.maxParticles = 50;
-                    main.loop = true;
-                    ps.Play();
-                    propulsorON = true;
+                    if (!propulsorON)
+                    {
+                        main.maxParticles = 50;
+                        main.loop = true;
+                        ps.Play();
+                        propulsorON = true;
+                    }
+                    rb.AddRelativeForce(Vector3.forward * 15);
+                    particle.SetActive(true);
+                    gasoline -= 2f * Time.deltaTime;
+                    OnPropulsorUse?.Invoke(gasoline);
                 }
-                rb.AddRelativeForce(Vector3.forward * 15);
-                particle.SetActive(true);
-                gasoline -= 2f * Time.deltaTime;
-                OnPropulsorUse?.Invoke(gasoline);
-            }
-            else
-            {
-                main.maxParticles = 0;
-                main.loop = false;
-                propulsorON = false;
+                else
+                {
+                    if (ps)
+                        main.maxParticles = 0;
+                    main.loop = false;
+                    propulsorON = false;
+                }
             }
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Base"))
+        if (collision.gameObject.CompareTag("Base") && Vector3.Angle(transform.forward, collision.gameObject.transform.up) < 40)
         {
             gasoline = 100f;
             rb.angularVelocity = Vector3.zero;
@@ -101,5 +111,10 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Destroy(this);
         GamePad.SetVibration(playerIndexOne, 0f, 0f);
+    }
+
+    private void EnableControls()
+    {
+        enabled = !enabled;
     }
 }

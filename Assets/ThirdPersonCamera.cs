@@ -15,8 +15,6 @@ public class ThirdPersonCamera : MonoBehaviour
     private float distanceY = 5f;
     private float currentX = 0f;
     private float currentY = 0f;
-    private float sensivityX = 4f;
-    private float sensivityY = 1f;
     private Vector3 cameraDirection;
     private float camDistance;
     private Vector2 cameraDistanceMinMax = new Vector2(0.5f, 30f);
@@ -54,7 +52,6 @@ public class ThirdPersonCamera : MonoBehaviour
         if(Physics.Linecast(transform.position, desiredCameraPosition,out hit))
         {
             distanceZ = -Mathf.Clamp(hit.distance, cameraDistanceMinMax.y, cameraDistanceMinMax.x);
-            Debug.Log("ee");
         }
         else
         {
