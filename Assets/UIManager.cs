@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour
 
     private void CheckWinCondition()
     {
-        
+            
     }
 
     public void ChangeScene(int scene)
