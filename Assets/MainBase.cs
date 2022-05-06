@@ -9,6 +9,6 @@ public class MainBase : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        OnCheckWinCondition();
+        OnCheckWinCondition?.Invoke();
     }
 }

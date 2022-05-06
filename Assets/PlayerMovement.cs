@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddRelativeForce(Vector3.forward * 15);
                 particle.SetActive(true);
                 gasoline -= 2f * Time.deltaTime;
-                OnPropulsorUse(gasoline);
+                OnPropulsorUse?.Invoke(gasoline);
             }
             else
             {
@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
             gasoline = 100f;
             rb.angularVelocity = Vector3.zero;
             rb.velocity = Vector3.zero;
-            OnPropulsorUse(gasoline);
+            OnPropulsorUse?.Invoke(gasoline);
         }
         else
         {
@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
                 transform.GetChild(0).transform.GetChild(i).gameObject.AddComponent<Rigidbody>();
             }
             StartCoroutine(StartShaking());
-            OnDamage();
+            OnDamage?.Invoke();
             gasoline = 0;
             Destroy(GetComponent<Rigidbody>());
         }
