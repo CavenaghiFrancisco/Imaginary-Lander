@@ -73,8 +73,10 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     if (ps)
+                    {
                         main.maxParticles = 0;
-                    main.loop = false;
+                        main.loop = false;
+                    }
                     propulsorON = false;
                 }
             }

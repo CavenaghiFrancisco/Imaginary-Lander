@@ -11,6 +11,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     private float offset = 0.3f;
 
+
+    private void Awake()
+    {
+    }
     // Start is called before the first frame update
     void Start()
     {

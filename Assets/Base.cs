@@ -10,8 +10,12 @@ public class Base : MonoBehaviour
     [SerializeField] PlayableDirector cameraAnimation;
     public static Action OnSuccesfulLanding;
     public static Action OnSuccesfulCinematic;
-    private bool alreadyUsed = false;
+    private bool alreadyUsed;
 
+    private void Start()
+    {
+        alreadyUsed = false;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
