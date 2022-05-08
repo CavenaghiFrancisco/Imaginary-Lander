@@ -23,7 +23,7 @@ public class Base : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Player") && Vector3.Angle(transform.up, collision.gameObject.transform.forward) < 40 && !alreadyUsed)
+        if (collision.transform.CompareTag("Player") && Vector3.Angle(transform.up, collision.gameObject.transform.forward) < 40 && !alreadyUsed && (bases[nextBase] == this.gameObject || firstBase))
         {
             if (!lastBase && !firstBase && !alreadyUsed)
             {
