@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
         PlayerMovement.OnPropulsorUse += UpdateGasoline;
         PlayerMovement.OnDamage += ShowLoseScreen;
         Base.OnSuccesfulLanding += UpdateScore;
-        MainBase.OnCheckWinCondition += CheckWinCondition;
     }
 
     private void Update()

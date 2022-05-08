@@ -6,10 +6,14 @@ using UnityEngine.Playables;
 
 public class Base : MonoBehaviour
 {
-    [SerializeField] Renderer[] baseColorZones;
-    [SerializeField] PlayableDirector cameraAnimation;
+    [SerializeField] bool firstBase;
+    [SerializeField] bool lastBase;
+    [SerializeField] private Renderer[] baseColorZones;
+    [SerializeField] private PlayableDirector cameraAnimation;
+    [SerializeField] private GameObject[] bases;
     public static Action OnSuccesfulLanding;
     public static Action OnSuccesfulCinematic;
+    private static int nextBase = 0;
     private bool alreadyUsed;
 
     private void Start()
@@ -21,8 +25,23 @@ public class Base : MonoBehaviour
     {
         if (collision.transform.CompareTag("Player") && Vector3.Angle(transform.up, collision.gameObject.transform.forward) < 40 && !alreadyUsed)
         {
-            alreadyUsed = true;
+            if (!lastBase && !firstBase && !alreadyUsed)
+            {
+                nextBase++;
+                alreadyUsed = true;
+            }
+            if (!lastBase)
+            {
+                bases[nextBase].GetComponent<Base>().baseColorZones[0].material.color = Color.yellow;
+                bases[nextBase].GetComponent<Base>().baseColorZones[1].material.color = Color.yellow;
+                bases[nextBase].tag = "Base";
+            }
+            if (!gameObject.CompareTag("Base"))
+            {
+                gameObject.tag = "Base";
+            }
             OnSuccesfulLanding();
+            if(!firstBase)
             cameraAnimation.gameObject.SetActive(true);
             foreach (Renderer zone in baseColorZones)
             {

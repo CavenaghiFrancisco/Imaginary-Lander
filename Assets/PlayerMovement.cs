@@ -6,12 +6,13 @@ using XInputDotNetPure;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private GameObject particle;
+    [SerializeField] private ParticleSystem ps;
     private Rigidbody rb;
+    private Collider col;
     private Camera cam;
     private float horizontal;
     private float vertical;
-    private ParticleSystem ps;
-    private GameObject particle;
     private ParticleSystem.MainModule main;
     private bool propulsorON;
     private static float gasoline = 100f;
@@ -25,8 +26,6 @@ public class PlayerMovement : MonoBehaviour
         GamePad.SetVibration(playerIndexOne, 0f, 0f);
         rb = GetComponent<Rigidbody>();
         cam = GetComponent<Camera>();
-        ps = transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
-        particle = transform.GetChild(1).gameObject;
         main = ps.main;
         Base.OnSuccesfulLanding += EnableControls;
         Base.OnSuccesfulCinematic += EnableControls;
@@ -60,9 +59,12 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (!propulsorON)
                     {
-                        main.maxParticles = 50;
-                        main.loop = true;
-                        ps.Play();
+                        if (ps)
+                        {
+                            main.maxParticles = 50;
+                            main.loop = true;
+                            ps.Play();
+                        }
                         propulsorON = true;
                     }
                     rb.AddRelativeForce(Vector3.forward * 15);
@@ -95,15 +97,18 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Debug.Log(collision.gameObject.name);
+            if(ps)
             main.maxParticles = 0;
-            for(int i = 0; i < transform.GetChild(0).childCount; i++)
+            for(int i = 0; i < transform.GetChild(1).childCount; i++)
             {
-                transform.GetChild(0).transform.GetChild(i).gameObject.AddComponent<Rigidbody>();
+                transform.GetChild(1).transform.GetChild(i).gameObject.AddComponent<Rigidbody>();
             }
             StartCoroutine(StartShaking());
-            OnDamage?.Invoke();
             gasoline = 0;
-            Destroy(GetComponent<Rigidbody>());
+            Destroy(rb);
+            Destroy(col);
+            OnPropulsorUse?.Invoke(gasoline);
+            OnDamage?.Invoke();
         }
     }
 
@@ -111,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
     {
         GamePad.SetVibration(playerIndexOne, 1f, 1f);
         yield return new WaitForSeconds(0.5f);
-        Destroy(this);
+        enabled=false;
         GamePad.SetVibration(playerIndexOne, 0f, 0f);
     }
 
