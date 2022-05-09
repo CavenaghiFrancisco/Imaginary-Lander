@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (enabled)
         {
-            if (Input.GetJoystickNames()[0] != "")
+            if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "")
             {
                 if (enabled)
                 {

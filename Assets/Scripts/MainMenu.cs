@@ -16,6 +16,25 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private TMP_Text resumeTxt;
     [SerializeField] private TMP_Text quitTxt;
     [SerializeField] private TMP_Text playTxt;
+    [SerializeField] private TMP_Text volumeTxt;
+    [SerializeField] private GameObject muteImage;
+    [SerializeField] private AudioSource music;
+    [SerializeField] private GameObject destroyedAudio;
+    private bool choosed;
+
+    private void Awake()
+    {
+        choosed = false;
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            PlayerPrefs.SetFloat("Volume",PlayerPrefs.GetFloat("Volume"));
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("Volume", 0.3f);
+        }
+        PlayerMovement.OnDamage += BackToMenu;
+    }
 
     private void Start()
     {
@@ -25,7 +44,12 @@ public class MainMenu : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetJoystickNames()[0] != "")
+        if(muteImage && music)
+        {
+            muteImage.SetActive(PlayerPrefs.GetFloat("Volume") == 0);
+            music.volume = PlayerPrefs.GetFloat("Volume");
+        }
+        if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "")
         {
             if (menuTxt && resumeTxt)
             {
@@ -33,11 +57,11 @@ public class MainMenu : MonoBehaviour
                 resumeTxt.text = "A - RESUME";
                 if (pause)
                 {
-                    if (Input.GetAxis("Cancel") != 0)
+                    if (Input.GetButtonDown("Cancel"))
                     {
                         ChangeScene("Menu");
                     }
-                    else if (Input.GetAxis("Submit") != 0)
+                    else if (Input.GetButtonDown("Submit"))
                     {
                         ResumeGame();
                     }
@@ -47,13 +71,20 @@ public class MainMenu : MonoBehaviour
             {
                 quitTxt.text = "B - QUIT";
                 playTxt.text = "A - PLAY";
-                if (Input.GetAxis("Cancel") != 0)
+                volumeTxt.text = "X - VOLUME";
+                if (Input.GetButtonDown("Cancel") && !choosed)
                 {
                     Application.Quit();
+                    choosed = true;
                 }
-                else if (Input.GetAxis("Submit") != 0)
+                else if (Input.GetButtonDown("Submit") && !choosed)
                 {
                     ChangeScene("SampleScene");
+                    choosed = true;
+                }
+                else if (Input.GetButtonDown("Volume") && !choosed)
+                {
+                    MuteAudio();
                 }
             }
         }
@@ -68,6 +99,7 @@ public class MainMenu : MonoBehaviour
             {
                 quitTxt.text = "QUIT";
                 playTxt.text = " PLAY";
+                volumeTxt.text = "VOLUME";
             }
         }
     }
@@ -93,7 +125,7 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame(string scene)
     {
-        SceneManager.LoadScene(scene);
+        Application.Quit();
     }
 
     private IEnumerator StartCinematich(string scene)
@@ -105,5 +137,31 @@ public class MainMenu : MonoBehaviour
         if(panel)
         panel.SetActive(true);
         SceneManager.LoadScene(scene);
+    }
+
+    public void MuteAudio()
+    {
+        if(PlayerPrefs.GetFloat("Volume") == 0)
+        {
+            PlayerPrefs.SetFloat("Volume", 0.3f);
+            muteImage.SetActive(true);
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("Volume", 0);
+            muteImage.SetActive(false);
+        }
+    }
+
+    private void BackToMenu()
+    {
+        timeline.gameObject.SetActive(true);
+        //destroyedAudio.SetActive(true);
+        StartCoroutine(StartCinematich("Menu"));
+    }
+
+    private void OnDestroy()
+    {
+        PlayerMovement.OnDamage -= BackToMenu;
     }
 }

@@ -10,24 +10,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject pausePanel;
     private float offset = 0.3f;
+    private bool alive = false;
 
 
-    private void Awake()
-    {
-    }
-    // Start is called before the first frame update
     void Start()
     {
         PlayerMovement.OnPropulsorUse += UpdateGasoline;
+        PlayerMovement.OnDamage += UpdateAlive;
     }
 
     private void Update()
     {
         fullGasolineImage.material.SetTextureOffset("_MainTex", new Vector2(offset += 0.1f * Time.deltaTime, 0));
-        if (Input.GetAxis("Start") != 0 || Input.GetKeyDown(KeyCode.Escape))
+        if (alive)
         {
-            pausePanel.SetActive(true);
-            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+            if (Input.GetAxis("Start") != 0 || Input.GetKeyDown(KeyCode.Escape))
+            {
+                pausePanel.SetActive(true);
+                Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+            }
         }
     }
 
@@ -36,8 +37,14 @@ public class UIManager : MonoBehaviour
         fullGasolineImage.fillAmount = gasoline/100;
     }
 
+    private void UpdateAlive()
+    {
+        alive = false;
+    }
+
     private void OnDestroy()
     {
         PlayerMovement.OnPropulsorUse -= UpdateGasoline;
+        PlayerMovement.OnDamage -= UpdateAlive;
     }
 }
