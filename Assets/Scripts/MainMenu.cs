@@ -82,7 +82,7 @@ public class MainMenu : MonoBehaviour
                     ChangeScene("SampleScene");
                     choosed = true;
                 }
-                else if (Input.GetButtonDown("Volume") && !choosed)
+                else if (Input.GetButtonDown("Volume"))
                 {
                     MuteAudio();
                 }
