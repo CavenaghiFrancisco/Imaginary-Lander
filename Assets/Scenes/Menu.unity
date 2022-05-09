@@ -853,7 +853,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7456fab60c3399479238507f4f0bb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timelineObject: {fileID: 0}
+  pause: {fileID: 0}
   timeline: {fileID: 131633576}
+  panel: {fileID: 0}
+  menuTxt: {fileID: 0}
+  resumeTxt: {fileID: 0}
+  quitTxt: {fileID: 237336322}
+  playTxt: {fileID: 109845198}
 --- !u!114 &1208293448
 MonoBehaviour:
   m_ObjectHideFlags: 0

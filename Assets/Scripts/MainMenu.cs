@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -11,11 +12,64 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject pause;
     [SerializeField] private PlayableDirector timeline;
     [SerializeField] private GameObject panel;
+    [SerializeField] private TMP_Text menuTxt;
+    [SerializeField] private TMP_Text resumeTxt;
+    [SerializeField] private TMP_Text quitTxt;
+    [SerializeField] private TMP_Text playTxt;
 
     private void Start()
     {
         Time.timeScale = 1;
         timelineObject = GameObject.FindGameObjectWithTag("Timeline");
+    }
+
+    private void Update()
+    {
+        if (Input.GetJoystickNames()[0] != "")
+        {
+            if (menuTxt && resumeTxt)
+            {
+                menuTxt.text = "B - MENU";
+                resumeTxt.text = "A - RESUME";
+                if (pause)
+                {
+                    if (Input.GetAxis("Cancel") != 0)
+                    {
+                        ChangeScene("Menu");
+                    }
+                    else if (Input.GetAxis("Submit") != 0)
+                    {
+                        ResumeGame();
+                    }
+                }
+            }
+            if (playTxt && quitTxt)
+            {
+                quitTxt.text = "B - QUIT";
+                playTxt.text = "A - PLAY";
+                if (Input.GetAxis("Cancel") != 0)
+                {
+                    Application.Quit();
+                }
+                else if (Input.GetAxis("Submit") != 0)
+                {
+                    ChangeScene("SampleScene");
+                }
+            }
+        }
+        else
+        {
+            if (menuTxt && resumeTxt)
+            {
+                menuTxt.text = "MENU";
+                resumeTxt.text = "RESUME";
+            }
+            if (playTxt && quitTxt)
+            {
+                quitTxt.text = "QUIT";
+                playTxt.text = " PLAY";
+            }
+        }
     }
 
     public void ChangeScene(string scene)
@@ -24,7 +78,7 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(StartCinematich(scene));
     }
 
-    public void ResumeGame(string scene)
+    public void ResumeGame()
     {
         pause.SetActive(false);
         if(Time.timeScale == 1)
