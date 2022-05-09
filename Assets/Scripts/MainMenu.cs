@@ -33,11 +33,11 @@ public class MainMenu : MonoBehaviour
                 resumeTxt.text = "A - RESUME";
                 if (pause)
                 {
-                    if (Input.GetAxis("Cancel") != 0)
+                    if (Input.GetButtonDown("Cancel"))
                     {
                         ChangeScene("Menu");
                     }
-                    else if (Input.GetAxis("Submit") != 0)
+                    else if (Input.GetButtonDown("Submit"))
                     {
                         ResumeGame();
                     }
@@ -47,11 +47,11 @@ public class MainMenu : MonoBehaviour
             {
                 quitTxt.text = "B - QUIT";
                 playTxt.text = "A - PLAY";
-                if (Input.GetAxis("Cancel") != 0)
+                if (Input.GetButtonDown("Cancel"))
                 {
                     Application.Quit();
                 }
-                else if (Input.GetAxis("Submit") != 0)
+                else if (Input.GetButtonDown("Submit"))
                 {
                     ChangeScene("SampleScene");
                 }

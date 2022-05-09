@@ -24,9 +24,9 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         fullGasolineImage.material.SetTextureOffset("_MainTex", new Vector2(offset += 0.1f * Time.deltaTime, 0));
-        if (Input.GetAxis("Start") != 0 || Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetButtonDown("Start") || Input.GetKeyDown(KeyCode.Escape))
         {
-            pausePanel.SetActive(true);
+            pausePanel.SetActive(!pausePanel.activeSelf);
             Time.timeScale = Time.timeScale == 0 ? 1 : 0;
         }
     }
