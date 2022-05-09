@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private Image fullGasolineImage;
     [SerializeField] private GameObject losePanel;
-    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject pausePanel;
     private float offset = 0.3f;
 
 
@@ -19,13 +19,16 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         PlayerMovement.OnPropulsorUse += UpdateGasoline;
-        PlayerMovement.OnDamage += ShowLoseScreen;
-        Base.OnSuccesfulLanding += UpdateScore;
     }
 
     private void Update()
     {
         fullGasolineImage.material.SetTextureOffset("_MainTex", new Vector2(offset += 0.1f * Time.deltaTime, 0));
+        if (Input.GetAxis("Start") != 0 || Input.GetKeyDown(KeyCode.Escape))
+        {
+            pausePanel.SetActive(true);
+            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+        }
     }
 
     private void UpdateGasoline(float gasoline)
@@ -33,26 +36,8 @@ public class UIManager : MonoBehaviour
         fullGasolineImage.fillAmount = gasoline/100;
     }
 
-    private void UpdateScore()
-    {
-        
-    }
-
-    private void ShowLoseScreen()
-    {
-        
-    }
-
-    private void CheckWinCondition()
-    {
-            
-    }
-
-    public void ChangeScene(int scene)
+    private void OnDestroy()
     {
         PlayerMovement.OnPropulsorUse -= UpdateGasoline;
-        PlayerMovement.OnDamage -= ShowLoseScreen;
-        Base.OnSuccesfulLanding -= UpdateScore;
-        SceneManager.LoadScene(scene);
     }
 }

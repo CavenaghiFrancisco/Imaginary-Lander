@@ -7,6 +7,7 @@ TagManager:
   - terrain
   - Base
   - Saved
+  - Timeline
   layers:
   - Default
   - TransparentFX

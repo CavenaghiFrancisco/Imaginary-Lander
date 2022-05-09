@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject particle;
     [SerializeField] private ParticleSystem ps;
+    [SerializeField] private Cinemachine.CinemachineFreeLook cineCam;
     private Rigidbody rb;
     private Collider col;
     private Camera cam;
@@ -46,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (enabled)
                 {
+                    cineCam.m_YAxis.m_InputAxisName = "RightStickVertical";
+                    cineCam.m_XAxis.m_InputAxisName = "RightStickHorizontal";
                     horizontal = Input.GetAxis("Horizontal");
                     vertical = Input.GetAxis("Vertical");
                 }
@@ -54,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (enabled)
                 {
+                    cineCam.m_YAxis.m_InputAxisName = "Mouse Y";
+                    cineCam.m_XAxis.m_InputAxisName = "Mouse X";
                     horizontal = Input.GetAxis("KeyboardHorizontal");
                     vertical = Input.GetAxis("KeyboardVertical");
                 }
@@ -139,5 +144,11 @@ public class PlayerMovement : MonoBehaviour
     private void EnableControls()
     {
         enabled = !enabled;
+    }
+
+    private void OnDestroy()
+    {
+        Base.OnSuccesfulLanding -= EnableControls;
+        Base.OnSuccesfulCinematic -= EnableControls;
     }
 }
