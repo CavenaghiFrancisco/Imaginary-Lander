@@ -55,7 +55,7 @@ public class MainMenu : MonoBehaviour
             {
                 menuTxt.text = "B - MENU";
                 resumeTxt.text = "A - RESUME";
-                if (pause)
+                if (pause.activeSelf)
                 {
                     if (Input.GetButtonDown("Cancel"))
                     {
@@ -67,26 +67,29 @@ public class MainMenu : MonoBehaviour
                     }
                 }
             }
-            if (playTxt && quitTxt)
+            if(SceneManager.GetActiveScene().name == "Menu")
             {
-                quitTxt.text = "B - QUIT";
-                playTxt.text = "A - PLAY";
-                volumeTxt.text = "X - VOLUME";
-                if (Input.GetButtonDown("Cancel") && !choosed)
+                if (playTxt && quitTxt)
                 {
-                    Application.Quit();
-                    choosed = true;
+                    quitTxt.text = "B - QUIT";
+                    playTxt.text = "A - PLAY";
+                    volumeTxt.text = "X - VOLUME";
+                    if (Input.GetButtonDown("Cancel") && !choosed)
+                    {
+                        Application.Quit();
+                        choosed = true;
+                    }
+                    else if (Input.GetButtonDown("Submit") && !choosed)
+                    {
+                        ChangeScene("SampleScene");
+                        choosed = true;
+                    }
+                    else if (Input.GetButtonDown("Volume"))
+                    {
+                        MuteAudio();
+                    }
                 }
-                else if (Input.GetButtonDown("Submit") && !choosed)
-                {
-                    ChangeScene("SampleScene");
-                    choosed = true;
-                }
-                else if (Input.GetButtonDown("Volume"))
-                {
-                    MuteAudio();
-                }
-            }
+            }   
         }
         else
         {
