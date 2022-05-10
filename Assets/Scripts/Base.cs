@@ -16,6 +16,11 @@ public class Base : MonoBehaviour
     private static int nextBase = 0;
     private bool alreadyUsed;
 
+    private void Awake()
+    {
+        nextBase = 0;
+    }
+
     private void Start()
     {
         alreadyUsed = false;
