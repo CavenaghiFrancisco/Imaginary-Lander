@@ -20,6 +20,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject muteImage;
     [SerializeField] private AudioSource music;
     [SerializeField] private GameObject destroyedAudio;
+    [SerializeField] private AudioSource[] audios;
     private bool choosed;
 
     private void Awake()
@@ -44,7 +45,7 @@ public class MainMenu : MonoBehaviour
 
     private void Update()
     {
-        if(muteImage && music)
+        if (muteImage && music)
         {
             muteImage.SetActive(PlayerPrefs.GetFloat("Volume") == 0);
             music.volume = PlayerPrefs.GetFloat("Volume");
@@ -64,10 +65,14 @@ public class MainMenu : MonoBehaviour
                     else if (Input.GetButtonDown("Submit"))
                     {
                         ResumeGame();
+                        foreach (AudioSource audio in audios)
+                        {
+                            audio.Play();
+                        }
                     }
                 }
             }
-            if(SceneManager.GetActiveScene().name == "Menu")
+            if (SceneManager.GetActiveScene().name == "Menu")
             {
                 if (playTxt && quitTxt)
                 {
@@ -89,7 +94,7 @@ public class MainMenu : MonoBehaviour
                         MuteAudio();
                     }
                 }
-            }   
+            }
         }
         else
         {
@@ -159,7 +164,7 @@ public class MainMenu : MonoBehaviour
     private void BackToMenu()
     {
         timeline.gameObject.SetActive(true);
-        //destroyedAudio.SetActive(true);
+        destroyedAudio.SetActive(true);
         StartCoroutine(StartCinematich("Menu"));
     }
 

@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image fullGasolineImage;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private AudioSource[] audios;
     private float offset = 0.3f;
     private bool alive = true;
 
@@ -27,6 +28,18 @@ public class UIManager : MonoBehaviour
             if (Input.GetButtonDown("Start")|| Input.GetKeyDown(KeyCode.Escape))
             {
                 pausePanel.SetActive(!pausePanel.activeSelf);
+                foreach (AudioSource audio in audios)
+                {
+                    if (pausePanel.activeSelf)
+                    {
+                        audio.Pause();
+                    }
+                    else
+                    {
+                        audio.Play();
+                    }
+                        
+                }
                 Time.timeScale = Time.timeScale == 0 ? 1 : 0;
             }
         }
