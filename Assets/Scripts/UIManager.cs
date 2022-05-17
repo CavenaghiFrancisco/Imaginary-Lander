@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
             {
                 foreach (PlayableDirector playableDirector in playableDirectors)
                 {
-                    if (playableDirector.state == PlayState.Playing && Input.GetButton("Submit"))
+                    if (playableDirector.state == PlayState.Playing && (Input.GetButton("Submit") || Input.GetKey(KeyCode.F)))
                     {
                         Time.timeScale = 10;
                         AudioListener.volume = 0;
