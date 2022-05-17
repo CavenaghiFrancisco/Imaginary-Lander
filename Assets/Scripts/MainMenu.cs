@@ -8,12 +8,12 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject timelineObject;
     [SerializeField] private GameObject pause;
     [SerializeField] private PlayableDirector timeline;
     [SerializeField] private GameObject panel;
     [SerializeField] private TMP_Text menuTxt;
     [SerializeField] private TMP_Text resumeTxt;
+    [SerializeField] private TMP_Text subtitleTxt;
     [SerializeField] private TMP_Text quitTxt;
     [SerializeField] private TMP_Text playTxt;
     [SerializeField] private TMP_Text volumeTxt;
@@ -25,6 +25,10 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        if (!PlayerPrefs.HasKey("Language"))
+        {
+            PlayerPrefs.SetString("Language", "ENG");
+        }
         choosed = false;
         if (PlayerPrefs.HasKey("Volume"))
         {
@@ -40,7 +44,6 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1;
-        timelineObject = GameObject.FindGameObjectWithTag("Timeline");
     }
 
     private void Update()
@@ -74,11 +77,12 @@ public class MainMenu : MonoBehaviour
             }
             if (SceneManager.GetActiveScene().name == "Menu")
             {
-                if (playTxt && quitTxt)
+                if (playTxt && quitTxt && volumeTxt && subtitleTxt)
                 {
                     quitTxt.text = "B - QUIT";
                     playTxt.text = "A - PLAY";
                     volumeTxt.text = "X - VOLUME";
+                    subtitleTxt.text = "Y - SUBTITLE: \n" + PlayerPrefs.GetString("Language", "ENG");
                     if (Input.GetButtonDown("Cancel") && !choosed)
                     {
                         Application.Quit();
@@ -88,10 +92,15 @@ public class MainMenu : MonoBehaviour
                     {
                         ChangeScene("SampleScene");
                         choosed = true;
+                        
                     }
                     else if (Input.GetButtonDown("Volume"))
                     {
                         MuteAudio();
+                    }
+                    else if (Input.GetButtonDown("Language"))
+                    {
+                        ChangeLanguage();
                     }
                 }
             }
@@ -108,6 +117,7 @@ public class MainMenu : MonoBehaviour
                 quitTxt.text = "QUIT";
                 playTxt.text = " PLAY";
                 volumeTxt.text = "VOLUME";
+                subtitleTxt.text = "SUBTITLE: \n" + PlayerPrefs.GetString("Language", "ENG");
             }
         }
     }
@@ -149,15 +159,33 @@ public class MainMenu : MonoBehaviour
 
     public void MuteAudio()
     {
-        if(PlayerPrefs.GetFloat("Volume") == 0)
+        if (timeline.state != PlayState.Playing)
         {
-            PlayerPrefs.SetFloat("Volume", 0.3f);
-            muteImage.SetActive(true);
+            if (PlayerPrefs.GetFloat("Volume") == 0)
+            {
+                PlayerPrefs.SetFloat("Volume", 0.3f);
+                muteImage.SetActive(true);
+            }
+            else
+            {
+                PlayerPrefs.SetFloat("Volume", 0);
+                muteImage.SetActive(false);
+            }
         }
-        else
+    }
+
+    public void ChangeLanguage()
+    {
+        if (timeline.state != PlayState.Playing)
         {
-            PlayerPrefs.SetFloat("Volume", 0);
-            muteImage.SetActive(false);
+            if (PlayerPrefs.GetString("Language") == "ENG")
+            {
+                PlayerPrefs.SetString("Language", "ESP");
+            }
+            else
+            {
+                PlayerPrefs.SetString("Language", "ENG");
+            }
         }
     }
 

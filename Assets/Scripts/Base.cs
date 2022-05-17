@@ -30,8 +30,9 @@ public class Base : MonoBehaviour
     {
         if (collision.transform.CompareTag("Player") && Vector3.Angle(transform.up, collision.gameObject.transform.forward) < 40 && !alreadyUsed && (bases[nextBase] == this.gameObject || firstBase))
         {
-            if (!lastBase && !firstBase && !alreadyUsed)
+            if (!alreadyUsed)
             {
+                if(!lastBase && !firstBase)
                 nextBase++;
                 alreadyUsed = true;
             }
