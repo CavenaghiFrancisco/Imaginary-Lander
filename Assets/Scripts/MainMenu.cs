@@ -53,7 +53,7 @@ public class MainMenu : MonoBehaviour
             muteImage.SetActive(PlayerPrefs.GetFloat("Volume") == 0);
             music.volume = PlayerPrefs.GetFloat("Volume");
         }
-        if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "")
+        if (Input.GetJoystickNames().Length > 0 && JoystickConnected(Input.GetJoystickNames()))
         {
             if (menuTxt && resumeTxt)
             {
@@ -120,6 +120,18 @@ public class MainMenu : MonoBehaviour
                 subtitleTxt.text = "SUBTITLE: \n" + PlayerPrefs.GetString("Language", "ENG");
             }
         }
+    }
+
+    private bool JoystickConnected(string[] joystciks)
+    {
+        foreach(string joystick in joystciks)
+        {
+            if(joystick != "")
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void ChangeScene(string scene)

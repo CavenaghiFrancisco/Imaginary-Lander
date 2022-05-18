@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (enabled)
         {
-            if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "")
+            if (Input.GetJoystickNames().Length > 0 && JoystickConnected(Input.GetJoystickNames()))
             {
                 if (enabled)
                 {
@@ -66,6 +66,18 @@ public class PlayerMovement : MonoBehaviour
         }
         
         
+    }
+
+    private bool JoystickConnected(string[] joystciks)
+    {
+        foreach (string joystick in joystciks)
+        {
+            if (joystick != "")
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void FixedUpdate()
