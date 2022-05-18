@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.AddTorque(cam.gameObject.transform.forward * 5f * -horizontal, ForceMode.Force);
                 rb.AddTorque(cam.gameObject.transform.right * 5f * -vertical, ForceMode.Force);
-                if (Input.GetAxis("Boost") != 0 || Input.GetAxis("KeyboardBoost") != 0 && gasoline > 0)
+                if ((Input.GetAxis("Boost") != 0 || Input.GetAxis("KeyboardBoost") != 0) && gasoline > 0)
                 {
                     if (!propulsorON)
                     {
